@@ -18,13 +18,37 @@ class WPActions
         $publish = $article->status;
         $postType = $article->post;
 
+        // Add the article author as a WordPress user
+        $authorName = $article->author;
+        $authorUsername = WPActions::getAuthorUsername( $authorName );
+        $authorEmail = $authorUsername . '@example.com';
+
+        $user_id = email_exists( $authorEmail );
+        if( ! $user_id ){
+            $user_id = wp_create_user( $authorUsername, wp_generate_password(), $authorEmail );
+
+
+            if( is_wp_error( $user_id ) ){
+                // if no user exists, default to current WP user
+                $user_id = get_current_user_id();
+            } else {
+                // if we've created a user, update this user's meta
+                $name = explode( ' ', $authorName );
+                $last_name = array_pop( $name );
+                update_user_meta( $user_id, 'last_name', $last_name );
+                update_user_meta( $user_id, 'first_name', implode( ' ', $name ) );
+                update_user_meta( $user_id, 'nickname', $authorName );
+                wp_update_user( ['ID' => $user_id, 'display_name' => $authorName] );
+            }
+        }
+
         // Create post object
         $cxp_post = array(
             'post_title' => !empty($title) ? $title : $identifier,
             'post_content' => $content,
             'post_status' => $publish ? 'publish' : 'draft',
             'post_type' => $postType,
-            'post_author' => get_current_user_id(),
+            'post_author' => $user_id,
             'post_category' => array(1), // (1) Default: Uncategorized
         );
 
@@ -53,6 +77,8 @@ class WPActions
             'suppress_filters' => true
         );
 
+
+
         // lesson learned query_posts('ASC') is bad
         foreach (get_posts($args) as $post) {
             //Logger::log(get_class() . __METHOD__, 'Post Title: ' . $post->post_title . ' Ident: ' . $identifier . ' Title: ' . $title, false);
@@ -68,6 +94,7 @@ class WPActions
         } else {
             $post_id = wp_insert_post($cxp_post);
             //Logger::log(get_class() . __METHOD__, 'Created Post: ' . $post_id, false);
+            //Logger::log(get_class() . __METHOD__, '<pre>$article = ' . print_r( $article, true ) . '</pre>', false);
         }
 
         return $post_id;
@@ -85,6 +112,16 @@ class WPActions
         );
 
         wp_insert_term($term, $taxonomy);
+    }
+
+    public static function getAuthorUsername( $string ){
+        if( empty( $string) )
+            return false;
+
+        $search = array( ' ', '.' );
+        $username = strtolower( str_replace($search, '', $string) );
+
+        return $username;
     }
 
     private static function updatePost($postID, $my_post)
