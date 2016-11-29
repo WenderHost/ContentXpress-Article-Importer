@@ -114,6 +114,21 @@ class WPActions
         wp_insert_term($term, $taxonomy);
     }
 
+    /**
+     * Given a string, returns a username
+     *
+     * Feed this function a person's name, and it
+     * will return that name with spaces and periods
+     * removed and all characters converted to lower
+     * case.
+     *
+     * @see str_replace, strtolower
+     *
+     * @since x.x.x
+     *
+     * @param str $string String.
+     * @return str Username
+     */
     public static function getAuthorUsername( $string ){
         if( empty( $string) )
             return false;
