@@ -19,6 +19,7 @@ require_once (dirname(__FILE__) . '/logger.php');
 require_once (dirname(__FILE__) . '/loginController.php');
 require_once (dirname(__FILE__) . '/redirects.php');
 require_once (dirname(__FILE__) . '/wp_actions.php');
+require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/wp_query.php' );
 
 
 //if (WP_DEBUG == true) {
