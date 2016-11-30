@@ -17,6 +17,7 @@ class WPActions
         $date = $article->date;
         $publish = $article->status;
         $postType = $article->post;
+        $termsArray = $article->term_tags;
 
         // Add the article author as a WordPress user
         $authorName = $article->author;
@@ -60,50 +61,53 @@ class WPActions
         if (!is_null($date))
             $cxp_post['post_date'] = $date; //cxp format 2011-09-27 wp format [ Y-m-d H:i:s ]
 
-        $args = array(
+        // Check if a post with the same title exists
+        $args = [
             'posts_per_page' => -1,
-            'offset' => 0,
-            'category' => '',
-            'category_name' => '',
-            'orderby' => 'date',
-            'order' => 'DESC',
-            'include' => '',
-            'exclude' => '',
-            'meta_key' => '',
-            'meta_value' => '',
+            'post_title_like' => $post_title,
             'post_type' => $postType,
-            'post_mime_type' => '',
-            'post_parent' => '',
-            'author' => '',
             'post_status' => 'any',
-            'suppress_filters' => true
-        );
+        ];
 
-
-
-        // lesson learned query_posts('ASC') is bad
-        foreach (get_posts($args) as $post) {
-            //Logger::log(get_class() . __METHOD__, 'Post Title: ' . $post->post_title . ' Ident: ' . $identifier . ' Title: ' . $title, false);
-            if ($post->post_title == $identifier || $post->post_title == $title) {
+        foreach ( get_posts( $args ) as $post ) {
+            if( $post_title == $post->post_title ){
                 $post_id = $post->ID;
                 break;
             }
         }
 
-        if (!is_null($post_id)) {
-            WPActions::updatePost($post_id, $cxp_post);
+        if ( ! is_null( $post_id ) ) {
+            WPActions::updatePost( $post_id, $cxp_post );
             //Logger::log(get_class() . __METHOD__, 'Updated Post: ' . $post_id, false);
         } else {
-            $post_id = wp_insert_post($cxp_post);
+            $post_id = wp_insert_post( $cxp_post );
             //Logger::log(get_class() . __METHOD__, 'Created Post: ' . $post_id, false);
-            //Logger::log(get_class() . __METHOD__, '<pre>$article = ' . print_r( $article, true ) . '</pre>', false);
+            //Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', false);
         }
+
+        // Add $termsArray as tags if post_type == `post`
+        if( 0 < count( $termsArray ) && 'post' == $postType ){
+            $term_ids = array();
+            foreach( $termsArray as $term ){
+                $term_exists = term_exists( $term, 'post_tag' );
+                if( ! $term_exists ){
+                    $term_id = wp_insert_term( $term, 'post_tag' );
+                    $term_id = ( is_array( $term_id ) )? $term_id['term_id'] : $term_id;
+                    $term_ids[] = intval( $term_id );
+                } else {
+                    $term_ids[] = intval( $term_exists['term_id'] );
+                }
+            }
+            //Logger::log(get_class() . __METHOD__, '<textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">$term_ids = ' . print_r( $term_ids, true ) . '</textarea>', false);
+            wp_set_object_terms( $post_id, $term_ids, 'post_tag' );
+        }
+
 
         return $post_id;
     }
 
     // Creates a new term in WP. Can be category or tag
-    public static function createTerm($term, $taxonomy, $args)
+    public static function createTerm( $term, $taxonomy, $args )
     {
         $args = array(
             'name' => $term,
@@ -113,7 +117,7 @@ class WPActions
             //'parent'	=>
         );
 
-        wp_insert_term($term, $taxonomy);
+        wp_insert_term( $term, $taxonomy );
     }
 
     /**
