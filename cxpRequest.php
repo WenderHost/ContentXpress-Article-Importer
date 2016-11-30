@@ -227,6 +227,7 @@ class CXPRequest
 
         CXPRequest::get_tag_info($articleXml, $node);
         CXPRequest::get_media_info($articleXml, $node);
+        CXPRequest::get_rtf_terms($articleXml, $node);
 
         return $node;
     }
@@ -243,6 +244,9 @@ class CXPRequest
         $xml->registerXPathNamespace('prl', 'http://prismstandard.org/namespaces/prl/2.0/');
         $xml->registerXPathNamespace('pur', 'http://prismstandard.org/namespaces/prismusagerights/2.1/');
         $xml->registerXPathNamespace('xhtml', 'http://www.w3.org/1999/xhtml');
+        $xml->registerXPathNamespace('entity', 'http://pubpress.com/temis/entity');
+        $xml->registerXPathNamespace('RTF', 'http://pubpress.com/temis/entity/RTF');
+        $xml->registerXPathNamespace('Terms', 'http://pubpress.com/temis/entity/RTF/Terms');
 
         return $xml;
     }
@@ -335,6 +339,41 @@ class CXPRequest
 
             if ($ctr == 0)
                 $articleNode->field_tags = null;
+        }
+    }
+
+    /**
+     * Retrieves <RTF:Terms> from XML
+     *
+     * @see Function/method/class relied on
+     * @link URL short description.
+     * @global type $varname short description.
+     *
+     * @since x.x.x
+     *
+     * @param obj $xml Article XML.
+     * @param obj $articleNode Article object.
+     * @return void
+     */
+    public static function get_rtf_terms( $xml, $articleNode )
+    {
+        if( $xml instanceof SimpleXMLElement ){
+            $queryStr = '//pam:message/entity:annotated/RTF:Terms';
+            $termNodes = $xml->xpath( $queryStr );
+
+            $ctr = 0;
+            foreach ( $termNodes as $termNode ) {
+
+                foreach( $termNode->attributes() as $a => $b ){
+                    if( 'Terms' == $a )
+                        $articleNode->term_tags[$ctr] = '' .$b;
+                }
+
+                $ctr++;
+            }
+
+            if ( 0 == $ctr )
+                $articleNode->term_tags = array();
         }
     }
 
