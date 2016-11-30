@@ -98,7 +98,6 @@ class WPActions
                     $term_ids[] = intval( $term_exists['term_id'] );
                 }
             }
-            //Logger::log(get_class() . __METHOD__, '<textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">$term_ids = ' . print_r( $term_ids, true ) . '</textarea>', false);
             wp_set_object_terms( $post_id, $term_ids, 'post_tag' );
         }
 
