@@ -42,9 +42,11 @@ class WPActions
             }
         }
 
+        $post_title = ( ! empty( $title ) )? $title : $identifier;
+
         // Create post object
         $cxp_post = array(
-            'post_title' => !empty($title) ? $title : $identifier,
+            'post_title' => $post_title,
             'post_content' => $content,
             'post_status' => $publish ? 'publish' : 'draft',
             'post_type' => $postType,
