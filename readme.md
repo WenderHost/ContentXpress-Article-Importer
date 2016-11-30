@@ -5,10 +5,10 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 Implemented features:
 
 - Uses `<dc:creator prism:role="author">` data as the post author
+- Imports `<RTF:Terms>` as post tags
 
 To be implemented features:
 
-- Imports `<RTF:Terms>` as post tags
 - Imports `<prism:coverDisplayDate>` as a custom taxnomy
 - Assigns proper date to the post
 - Adds article images to the top of the content as a `[gallery]`
