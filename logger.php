@@ -9,9 +9,7 @@ class Logger {
 				//      if(!is_array($stringToLog))
 				//       echo htmlspecialchars($stringToLog).'<br />';
 				//      else
-				echo $source.' START:<pre>';
-				var_dump( $stringToLog );
-				echo '</pre>END<br />';
+				echo '<div>' . $source . ' START:<pre>' . $stringToLog . '</pre>END</div>';
 			}
 		}
 	}
