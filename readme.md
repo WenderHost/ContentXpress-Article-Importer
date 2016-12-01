@@ -8,8 +8,8 @@ Implemented features:
 - Imports `<RTF:Terms>` as post tags
 - Imports `<prism:coverDisplayDate>` as a custom taxnomy
 - Assigns proper date to the post by parsing the date from the `<dc:identifier>` field
+- Imports `<prism:section>` as a category
 
 To be implemented features:
 
 - Adds article images to the top of the content as a `[gallery]`
-- Imports `<prism:section>` as a category

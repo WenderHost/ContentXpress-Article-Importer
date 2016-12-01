@@ -225,6 +225,7 @@ class CXPRequest
         $node->body = CXPRequest::get_article_body($articleXml);
         $node->format = 'plain_text';
         $node->coverDisplayDate = CXPRequest::get_article_part($articleXml, $queryStr = '//pam:message/pam:article/xhtml:head/prism:coverDisplayDate');
+        $node->section = CXPRequest::get_article_part($articleXml, $queryStr = '//pam:message/pam:article/xhtml:head/prism:section');
 
         CXPRequest::get_tag_info($articleXml, $node);
         CXPRequest::get_media_info($articleXml, $node);
