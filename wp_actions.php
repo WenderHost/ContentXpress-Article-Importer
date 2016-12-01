@@ -73,7 +73,16 @@ class WPActions
         if (!is_null($tagsArray))
             $cxp_post['tags_input'] = $tagsArray;
 
-        if (!is_null($date))
+        if( empty( $date ) ){
+            $date_array = explode( '_', $identifier );
+            $month = $date_array[1];
+            $year = $date_array[2];
+            if( in_array( strtolower( $month ), ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'] ) && is_numeric( $year ) ){
+                $date = date( 'Y-m-d H:i:s', strtotime( $month . ' ' . $year ) );
+            }
+        }
+
+        if ( ! is_null( $date ) )
             $cxp_post['post_date'] = $date; //cxp format 2011-09-27 wp format [ Y-m-d H:i:s ]
 
         // Check if a post with the same title exists
