@@ -224,10 +224,13 @@ class CXPRequest
         $node->uid = 1;
         $node->body = CXPRequest::get_article_body($articleXml);
         $node->format = 'plain_text';
+        $node->coverDisplayDate = CXPRequest::get_article_part($articleXml, $queryStr = '//pam:message/pam:article/xhtml:head/prism:coverDisplayDate');
 
         CXPRequest::get_tag_info($articleXml, $node);
         CXPRequest::get_media_info($articleXml, $node);
         CXPRequest::get_rtf_terms($articleXml, $node);
+
+        Logger::log( get_class() . __METHOD__, '<strong>$articleXml:</strong><br><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $articleXml->asXML(), true ) . '</textarea>', true );
 
         return $node;
     }
