@@ -18,6 +18,7 @@ class WPActions
         $publish = $article->status;
         $postType = $article->post;
         $termsArray = $article->term_tags;
+        $coverDisplayDate = $article->coverDisplayDate;
 
         // Add the article author as a WordPress user
         $authorName = $article->author;
@@ -52,6 +53,7 @@ class WPActions
 
                 // Set new user to `author` role
                 $user = new WP_User( $user_id );
+                $user->remove_role( 'subscriber' );
                 $user->add_role( 'author' );
             }
         }
@@ -114,6 +116,20 @@ class WPActions
             wp_set_object_terms( $post_id, $term_ids, 'post_tag' );
         }
 
+        // Tag this post under the `Issue` custom taxonomy
+        // using the value of $coverDisplayDate
+        if( ! empty( $coverDisplayDate ) ){
+            $issue = $coverDisplayDate;
+            $term_exists = term_exists( $issue, 'issue' );
+            if( ! $term_exists ){
+                $term_id = wp_insert_term( $issue, 'issue' );
+                $term_id = ( is_array( $term_id ) )? $term_id['term_id'] : $term_id;
+            } else {
+                $term_id = $term_exists['term_id'];
+            }
+            settype( $term_id, 'int' );
+            wp_set_object_terms( $post_id, $term_id, 'issue' );
+        }
 
         return $post_id;
     }
