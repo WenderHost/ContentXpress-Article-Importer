@@ -40,6 +40,10 @@ class WPActions
                 update_user_meta( $user_id, 'first_name', implode( ' ', $name ) );
                 update_user_meta( $user_id, 'nickname', $authorName );
                 wp_update_user( ['ID' => $user_id, 'display_name' => $authorName] );
+
+                // Set new user to `author` role
+                $user = new WP_User( $user_id );
+                $user->add_role( 'author' );
             }
         }
 
@@ -82,7 +86,7 @@ class WPActions
         } else {
             $post_id = wp_insert_post( $cxp_post );
             //Logger::log(get_class() . __METHOD__, 'Created Post: ' . $post_id, false);
-            //Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', false);
+            Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', false);
         }
 
         // Add $termsArray as tags if post_type == `post`
