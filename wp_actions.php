@@ -28,8 +28,17 @@ class WPActions
         if( ! $user_id ){
             $user_id = wp_create_user( $authorUsername, wp_generate_password(), $authorEmail );
 
-
             if( is_wp_error( $user_id ) ){
+                // Show the errors
+                $error_codes = $user_id->get_error_codes();
+                if( is_array( $error_codes ) && 0 < count( $error_codes ) ){
+                    $errors = array();
+                    foreach( $error_codes as $code ){
+                        $errors[] = 'Error(' . $code . '): ' . $user_id->get_error_message( $code );
+                    }
+                }
+                Logger::log( get_class() . __METHOD__, 'Error creating user <code>' . $authorUsername . '</code><ul><li>' . implode( '</li><li>', $errors ) . '<li></ul>', true );
+
                 // if no user exists, default to current WP user
                 $user_id = get_current_user_id();
             } else {
@@ -86,7 +95,7 @@ class WPActions
         } else {
             $post_id = wp_insert_post( $cxp_post );
             //Logger::log(get_class() . __METHOD__, 'Created Post: ' . $post_id, false);
-            Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', false);
+            Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', true );
         }
 
         // Add $termsArray as tags if post_type == `post`
@@ -142,7 +151,7 @@ class WPActions
         if( empty( $string) )
             return false;
 
-        $search = array( ' ', '.' );
+        $search = array( ' ', '.', ',', '-' );
         $username = strtolower( str_replace($search, '', $string) );
 
         return $username;
