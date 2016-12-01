@@ -6,10 +6,10 @@ Implemented features:
 
 - Uses `<dc:creator prism:role="author">` data as the post author
 - Imports `<RTF:Terms>` as post tags
+- Imports `<prism:coverDisplayDate>` as a custom taxnomy
 
 To be implemented features:
 
-- Imports `<prism:coverDisplayDate>` as a custom taxnomy
 - Assigns proper date to the post
 - Adds article images to the top of the content as a `[gallery]`
 - Imports `<prism:section>` as a category
