@@ -28,10 +28,8 @@ function content_submenu_page_callback()
                     //update images with the image file
                     //CXPRequest::replaceImageAttr($imageID, $article, $imgArray);
                 }
-                // remove images from content
-                $article->body = preg_replace( "/<img[^>]+\>/i", '', $article->body );
                 // Add a gallery to the top of the post
-                $article->body = "[gallery]\n\n" . $article->body;
+                $article->body = "[gallery]\n" . $article->body;
             }
 
             //modifies the post after images have been parsed and uploaded
