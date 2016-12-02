@@ -222,7 +222,12 @@ class CXPRequest
         $node->sticky = 0;
         $node->format = 1;
         $node->uid = 1;
-        $node->body = CXPRequest::get_article_body($articleXml);
+
+        // Get the content and strip extraneous tags
+        $body = CXPRequest::get_article_body($articleXml);
+        $body = strip_tags( $body, '<p><h1><h2><h3><h4><h5><h6><code><pre><em><strong><i>' );
+        $node->body = $body;
+
         $node->format = 'plain_text';
         $node->coverDisplayDate = CXPRequest::get_article_part($articleXml, $queryStr = '//pam:message/pam:article/xhtml:head/prism:coverDisplayDate');
         $node->section = CXPRequest::get_article_part($articleXml, $queryStr = '//pam:message/pam:article/xhtml:head/prism:section');
