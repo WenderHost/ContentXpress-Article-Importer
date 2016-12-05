@@ -23,6 +23,8 @@ class WPActions
 
         // Add the article author as a WordPress user
         $authorName = $article->author;
+        if( empty( $authorName ) )
+            $authorName = 'MD-Update Staff';
         $authorUsername = WPActions::getAuthorUsername( $authorName );
         $authorEmail = $authorUsername . '@example.com';
 
