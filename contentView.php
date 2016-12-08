@@ -29,7 +29,7 @@ function content_submenu_page_callback()
                     //CXPRequest::replaceImageAttr($imageID, $article, $imgArray);
                 }
                 // Add a gallery to the top of the post
-                $article->body = "[gallery]\n" . $article->body;
+                $article->body = "[gallery link=\"file\"]\n" . $article->body;
             }
 
             //modifies the post after images have been parsed and uploaded
