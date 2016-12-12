@@ -1,0 +1,29 @@
+{
+  "name": "contentxpressimporter",
+  "pluginDirName": "contentXpressImporter",
+  "version": "1.0.0",
+  "description": "This is a [WordPress](https://wordpress.org) plugin for importing articles from [ContentXPress](http://www.pubpress.com/services/pubpress-solutions/contentxpress). It is a fork of the original *ContentXpress Article Importer* developed by the [Publishers Printing Company](http://www.pubpress.com/).",
+  "main": "controller.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WenderHost/ContentXpress-Article-Importer.git"
+  },
+  "author": "Michael Wender",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/WenderHost/ContentXpress-Article-Importer/issues"
+  },
+  "homepage": "https://github.com/WenderHost/ContentXpress-Article-Importer#readme",
+  "devDependencies": {
+    "git-rev-sync": "^1.8.0",
+    "gulp": "^3.9.1",
+    "gulp-replace": "^0.5.4",
+    "gulp-zip": "^3.2.0",
+    "json-file": "^0.1.0",
+    "rimraf": "^2.5.4",
+    "run-sequence": "^1.2.2"
+  }
+}

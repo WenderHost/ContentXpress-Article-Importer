@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: ContentXpress Article Importer
- * Description: This Plugin imports articles from the ContentXpress.
- * Version: 2.1.0
+ * Description: This Plugin imports articles from the ContentXpress. {latest_commit}
+ * Version: {version}
  * Author: Publishers Printing Company
  * Author URI: http://www.pubpress.com/services/pubpress-solutions/contentxpress
  * Network: true
