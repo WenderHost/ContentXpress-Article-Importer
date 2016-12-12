@@ -218,66 +218,37 @@ class WPActions
         $media = null;
         $attach_id = null;
 
-        if (wp_mkdir_p($upload_dir['path'])) {
-            $file = $upload_dir['path'] . '/' . $filename;
+        if ( wp_mkdir_p( $upload_dir['path'] ) ) {
+            $path = $upload_dir['path'];
         } else {
             //Check basedir to see if file exists
-            $file = $upload_dir['basedir'] . '/' . $filename;
+            $path = $upload_dir['basedir'];
         }
 
-        if (!file_exists($file)) {
-            $file_created = file_put_contents($file, $image['file']);
+        $unique_filename = wp_unique_filename( $path, $filename );
 
-            if ($file_created === false) {
-                throw new Exception('File could not be created.');
-            }
+        $file_created = file_put_contents( trailingslashit( $path ) . $unique_filename, $image['file'] );
 
-            $wp_filetype = wp_check_filetype($filename, null);
-            $attachment = array(
-                'guid' => wp_upload_dir()['url'] . '/' . $filename,
-                'post_mime_type' => $wp_filetype['type'],
-                'post_title' => $filename,
-                'post_status' => 'inherit',
-                'post_excerpt' => $caption,
-                'post_content' => ''
-            );
-
-            $attach_id = wp_insert_attachment($attachment, $filepath, $post_id);
-            $attach_data = wp_generate_attachment_metadata($attach_id, $filepath);
-            wp_update_attachment_metadata($attach_id, $attach_data);
-
-            //set the featured image
-            set_post_thumbnail($post_id, $attach_id);
-        } else {
-            //get all media
-            $args = array(
-                'posts_per_page' => -1,
-                'offset' => 0,
-                'category' => '',
-                'category_name' => '',
-                'orderby' => 'date',
-                'order' => 'DESC',
-                'include' => '',
-                'exclude' => '',
-                'meta_key' => '',
-                'meta_value' => '',
-                'post_type' => 'attachment',
-                'post_mime_type' => '',
-                'post_parent' => '',
-                'author' => '',
-                'post_status' => 'any',
-                'suppress_filters' => true
-            );
-
-            //lets try to match things up by the filename
-            foreach (get_posts($args) as $media) {
-                if ($media->post_title == $filename) {
-                    $attach_id = $media->ID;
-                    $attach_data = wp_generate_attachment_metadata($attach_id, $filepath);
-                    wp_update_attachment_metadata($attach_id, $attach_data);
-                }
-            }
+        if ( false === $file_created ) {
+            throw new Exception('File could not be created.');
         }
+
+        $wp_filetype = wp_check_filetype( $unique_filename, null );
+        $attachment = array(
+            'guid' => trailingslashit( $upload_dir['url'] ) . $unique_filename,
+            'post_mime_type' => $wp_filetype['type'],
+            'post_title' => $unique_filename,
+            'post_status' => 'inherit',
+            'post_excerpt' => $caption,
+            'post_content' => ''
+        );
+
+        $attach_id = wp_insert_attachment( $attachment, trailingslashit( $path ) . $unique_filename, $post_id );
+        $attach_data = wp_generate_attachment_metadata( $attach_id, trailingslashit( $path ) . $unique_filename );
+        wp_update_attachment_metadata( $attach_id, $attach_data );
+
+        //set the featured image
+        set_post_thumbnail($post_id, $attach_id);
 
         if (is_null($attach_id)) {
             throw new Exception('Could not find location of image.');
