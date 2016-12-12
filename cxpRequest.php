@@ -449,14 +449,14 @@ class CXPRequest
         $file = file_get_contents($url, false, $header);
 
         if ($file === false) {
-            $file = file_get_contents(plugin_dir_path(__FILE__) . 'images/missingImage.jpg');
+            $file = file_get_contents(plugin_dir_path(__FILE__) . 'images/missing-image.png');
         } else {
             $filename = CXPRequest::parseHeaders($http_response_header)['Content-Disposition'];
             $filename = str_replace('filename=', '', $filename);
         }
 
         $image['file'] = $file;
-        $image['filename'] = !empty($filename) ? $filename : 'missingImage.jpg';
+        $image['filename'] = !empty($filename) ? $filename : 'missing-image.png';
 
         return $image;
     }
