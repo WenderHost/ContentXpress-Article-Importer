@@ -13,6 +13,10 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.1.2
+
+- Importing `<p prism:class="deck">...</p>` as a custom field called `sub_heading`
+
 #### 2.1.1
 
 - Adjusted `WPActions::uploadMedia` to generate unique filenames for each image attachment
