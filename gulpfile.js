@@ -63,9 +63,9 @@ gulp.task('update-package-meta', function(){
 // ### Zip Package
 // `gulp zip-package` - Archive package files
 gulp.task('zip-package',function(){
-  return gulp.src(packageDir + '/**/*')
-    .pipe(zip(pluginDirName + '.zip'))
-    .pipe(gulp.dest('./package'));
+  return gulp.src( packageDir + '/**/*', { base: './package' } )
+    .pipe( zip( pluginDirName + '.zip' ) )
+    .pipe( gulp.dest( './package' ) );
 });
 
 // ### Gulp
