@@ -65,6 +65,7 @@ class WPActions
 
         // Sanitize the post content
         // Set <p prism:class="deck">...</p> as sub_heading
+        $sub_heading = '';
         if( false != preg_match( '/(<p\sprism:class="deck">)(.*)(<\/p>)/U', $content, $matches ) ){
             $sub_heading = $matches[2];
             $content = str_replace( $matches[0], '', $content );
@@ -78,7 +79,6 @@ class WPActions
             'post_type' => $postType,
             'post_author' => $user_id,
             'post_category' => array(1), // (1) Default: Uncategorized
-            'sub_heading' => $sub_heading,
         );
 
         if (!is_null($tagsArray))
@@ -121,8 +121,8 @@ class WPActions
         }
 
         // Add the sub-heading as a custom field
-        if( ! empty( $cxp_post['sub_heading'] ) ){
-            update_post_meta( $post_id, 'sub_heading', $cxp_post['sub_heading'] );
+        if( ! empty( $sub_heading ) ){
+            update_post_meta( $post_id, 'sub_heading', $sub_heading );
         }
 
         // Add $termsArray as tags if post_type == `post`
