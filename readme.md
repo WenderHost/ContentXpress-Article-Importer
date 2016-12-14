@@ -13,6 +13,11 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.1.3
+
+- Initialing `$sub_heading` variable in `WPActions::createPost()`
+- Updates to package build process
+
 #### 2.1.2
 
 - Importing `<p prism:class="deck">...</p>` as a custom field called `sub_heading`
