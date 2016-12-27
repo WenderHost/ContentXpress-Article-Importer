@@ -275,7 +275,7 @@ function content_submenu_page_callback()
     //echo("{$_SESSION['defaultPostType']}");
     echo '<div class="mainbody" style="margin-top: 5px;">';
     echo '<div id="importListContainer" class="importListContainer">';
-    echo '<table id="importTable" class="importTable">';
+    echo '<table id="importTable" class="importTable"><colgroup><col style="width: 50%"/><col style="width: 10%" /><col style="width: 10%" /><col style="width: 30%" /></colgroup>';
     echo '<thead>';
     echo '<tr id="postTypesRow">';
     echo '<td colspan="3">Set Post Type for ALL in List:</td>';

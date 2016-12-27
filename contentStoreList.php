@@ -6,6 +6,7 @@ require_once (dirname(__FILE__) . '/logger.php');
 require_once (dirname(__FILE__) . '/contentView.php');
 
 function displayArticlesList(){
+    echo '<tr><td></td><td class="align-center"><input type="checkbox" name="wp_publish_all" id="wpPublishAll" value="1" /></td><td colspan="2"><label for="wpPublishAll">Publish All</label></td></tr>';
     foreach ($_SESSION['importList'] as $articleCid => $value) {
         echo '<tr>';
         if ($value instanceof ArticleToImport) {

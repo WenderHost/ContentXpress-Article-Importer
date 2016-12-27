@@ -113,6 +113,22 @@ jQuery(function () {
     });
 });
 
+// START Publish All checkbox
+(function($){
+    $('#importTable').on('change', '#wpPublishAll', function(){
+        // Toggle all .publishCheckbox checkboxes
+        var publishAll = $('#wpPublishAll');
+        $('.publishCheckbox').prop('checked', publishAll.prop('checked') );
+
+        // Update global publish object
+        var publishCheckboxes = $('.publishCheckbox');
+        for (var i = publishCheckboxes.length - 1; i >= 0; i--) {
+            publishStoredArticles(publishCheckboxes[i].value, publishCheckboxes[i].checked);
+        }
+    });
+})(jQuery);
+// END Publish All checkbox
+
 function removeItem(articleCid) {
     storeArticles([createArticleData(articleCid, false)]), jQuery('#importcheckbox_' + articleCid).prop('checked', false);
 }
