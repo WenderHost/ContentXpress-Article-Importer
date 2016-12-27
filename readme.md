@@ -13,6 +13,13 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.2.0
+
+- Utilizing `WP_Async_Task` for article imports
+- Adding `admin_notices` to alert the user when a batch of articles has completed importing
+- Adding a "Check All" option to set imported posts to "Publish"
+- BUGFIX: Fixing original developers' code so that the "Articles per page" drop down will work
+
 #### 2.1.4
 
 - BUGFIX: Original code doesn't handle duplicate article titles, they get overwritten. Updating code to create unique article titles for "News" and "Events".
