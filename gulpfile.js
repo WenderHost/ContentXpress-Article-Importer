@@ -11,7 +11,7 @@ var pluginDirName = json.read('./package.json').get('pluginDirName');
 var packageDir = './package/' + pluginDirName;
 
 // ### Clean Package
-// `gulp clean-package` - Deletes the packaged theme.
+// `gulp clean-package` - Deletes the packaged plugin.
 gulp.task('clean-package', function(){
   rmdir('./package',function(error){});
 });
@@ -36,7 +36,7 @@ gulp.task('copy-plugin', function(){
 });
 
 // ### Package
-// `gulp package` - Packages files into WordPress production ready theme.
+// `gulp package` - Packages files into WordPress production ready plugin.
 gulp.task('package', function(callback){
   runSequence(
     'clean-package',
@@ -72,4 +72,9 @@ gulp.task('zip-package',function(){
 // `gulp` - Run a complete build. To compile for production run `gulp --production`.
 gulp.task('default', [], function() {
   gulp.start('package');
+});
+
+// `gulp clean` - Runs `clean-package`.
+gulp.task('clean', [], function() {
+  gulp.start('clean-package');
 });
