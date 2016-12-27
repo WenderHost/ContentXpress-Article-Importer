@@ -32,7 +32,7 @@ if ( true == WP_DEBUG ) {
 function CXPImport_init()
 {
     wp_enqueue_style('CXPStyleSheet', plugins_url('style.css', __FILE__));
-    wp_register_script('contentView', plugins_url('contentView.js', __FILE__), array('jquery'), '1.0', true );
+    wp_register_script('contentView', plugins_url('contentView.js', __FILE__), array('jquery'), filemtime( plugin_dir_path( __FILE__ ) . 'contentView.js' ), true );
     wp_localize_script( 'contentView', 'contentViewAjax', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
     wp_enqueue_script('jQuery');
     wp_enqueue_script('contentView');
