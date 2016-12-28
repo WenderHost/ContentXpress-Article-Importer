@@ -185,8 +185,3 @@ jQuery(function() {
         jQuery('#postTypesRow').show();
     }
 });*/
-
-window.onbeforeunload = processing;
-function processing(){
-    document.body.style.cursor = 'wait';
-}
