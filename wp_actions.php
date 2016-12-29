@@ -26,7 +26,8 @@ class WPActions
         if( empty( $authorName ) )
             $authorName = 'MD-Update Staff';
         $authorUsername = WPActions::getAuthorUsername( $authorName );
-        $authorEmail = $authorUsername . '@example.com';
+        $domain = str_replace( 'http://', '', get_site_url( null, '', 'http' ) );
+        $authorEmail = $authorUsername . '@' . $domain;
 
         $user_id = email_exists( $authorEmail );
         if( ! $user_id ){
