@@ -9,6 +9,12 @@
  * License: GPL2
  */
 
+// Initialize Background Image Processing
+require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/wp-async-request.php' );
+require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/wp-background-process.php' );
+require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/background-image-process.php' );
+$BackgroundImageProcess = new CXP_Background_Image_Process();
+
 require_once (dirname(__FILE__) . '/preview.php');
 require_once (dirname(__FILE__) . '/ArticleToImport.php');
 require_once (dirname(__FILE__) . '/contentStoreList.php');
@@ -19,7 +25,10 @@ require_once (dirname(__FILE__) . '/logger.php');
 require_once (dirname(__FILE__) . '/loginController.php');
 require_once (dirname(__FILE__) . '/redirects.php');
 require_once (dirname(__FILE__) . '/wp_actions.php');
+
+// Load misc functions
 require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/custom_taxonomy.php' );
+require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/settings.php' );
 require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/wp_query.php' );
 
 
@@ -39,41 +48,51 @@ function CXPImport_init()
 }
 
 add_action('admin_init', 'CXPImport_init');
-add_action('admin_menu', 'contentXpress', 'cxp_ob_start');
+add_action( 'admin_menu', 'contentXpress' );
 
 function contentXpress()
 {
-    $page_title = 'ContentXpress';
-    $menu_title = 'ContentXpress';
-    $capability = 'edit_posts';
-    $menu_slug = 'contentXpress';
-    $function = 'cxppage_submenu_callback';
-    $icon_url = plugin_dir_url(__FILE__) . "images/coLogo20px.png";
-    $position = '24.1';
+    $menu_slug = 'contentxpress'; // $menu_slug = 'contentXpress';
 
-    add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
-    add_submenu_page($menu_slug, 'Content', 'Content', 'edit_posts', 'content', 'content_submenu_page_callback');
+    // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+    add_menu_page( 'ContentXpress', 'ContentXpress', 'edit_posts', $menu_slug, 'content_submenu_page_callback', plugin_dir_url(__FILE__) . 'images/coLogo20px.png', '24.1' );
+    add_submenu_page( $menu_slug, 'Import Content', 'Import', 'edit_posts', $menu_slug, 'content_submenu_page_callback');
+
+    // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+    add_submenu_page(
+        $menu_slug,
+        'Settings',
+        'Settings',
+        'edit_posts',
+        'cxp-settings',
+        'CXP\lib\fns\settings\settings_page_callback'
+    );
 }
 
-//Check if user is logged in when clicking View Content tab. If they are not, redirect to the login page.
+// Check if user is logged in when clicking View Content tab. If they are not, redirect to the login page.
 function logged_in_user_check()
 {
     global $pagenow;
-    $page = (isset($_REQUEST['page']) ? $_REQUEST['page'] : false);
-    if ($pagenow == 'admin.php' && ($page == 'content')) {
-        $cxpuser = CXPRequest::contentXpressSessionGet("cxpuser");
-        if (empty($cxpuser)) {
-            wp_redirect('admin.php?page=contentXpress');
+    $page = isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : false ;
+    if ( $pagenow == 'admin.php' && ( $page == 'contentxpress' ) ) {
+        //$cxpuser = CXPRequest::contentXpressSessionGet("cxpuser");
+
+        $success = cxp_login();
+        if ( false == $success ) {
+            add_settings_error( 'invalidLogin', 'invalid', 'Your login credentials did not work. Please update them.', 'error' );
+            wp_redirect('admin.php?page=cxp-settings');
             exit;
         }
     }
-    elseif ($pagenow == 'admin.php' && ($page == 'contentXpress')) {
+    /*
+    elseif ($pagenow == 'admin.php' && ($page == 'settings')) {
         $cxpuser = CXPRequest::contentXpressSessionGet("cxpuser");
         if (!empty($cxpuser)) {
-            wp_redirect('admin.php?page=content');
+            wp_redirect('admin.php?page=contentxpress');
             exit;
         }
     }
+    /**/
 }
 
 

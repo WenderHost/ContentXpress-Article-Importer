@@ -8,34 +8,45 @@ require_once(dirname(__FILE__) . '/contentStoreList.php');
 
 function content_submenu_page_callback()
 {
+    global $BackgroundImageProcess;
 
     if (isset($_POST ['importButton'])) {
         //upload article and images to Wordpress
+        write_log( '-----------------------------------' );
+        write_log( 'IMPORTING ' . count( $_SESSION['importList'] ) . ' ARTICLE(S)' );
+        write_log( '-----------------------------------' );
+
         foreach ($_SESSION['importList'] as $articleCid => $value) {
-            $article = CXPRequest::importArticle($value);
-            //create the initial post
-            $post_id = WPActions::createPost($article);
-            if (isset($article->field_image)) {
-                for ($j = 0; $j < sizeof($article->field_image); $j++) {
-                    //get image data
-                    $imageData = CXPRequest::getImage($article->field_image[$j]['fid']);
-                    $imageID = $article->field_image[$j]['fid'];
-                    $caption = $article->field_image[$j]['caption'];
+            write_log("\n\n");
+            $article = CXPRequest::importArticle( $value );
 
-                    //upload images to the wp directory
-                    $imgArray = WPActions::uploadMedia($imageData, $caption, $post_id);
-
-                    //update images with the image file
-                    //CXPRequest::replaceImageAttr($imageID, $article, $imgArray);
-                }
-                // Add a gallery to the top of the post
+            // If article has images, add a gallery to the top of the post
+            if ( isset( $article->field_image ) )
                 $article->body = "[gallery link=\"file\" type=\"slideshow\" autostart=\"false\"]\n" . $article->body;
+
+            //create the initial post
+            $post_id = WPActions::createPost( $article );
+
+            // Add any article images to our Background Image Processing queue
+            if ( isset( $article->field_image ) ) {
+                write_log( 'Adding ' . count( $article->field_image ) . ' image(s) to Background Image Processing queue...' );
+                for ( $j = 0; $j < sizeof( $article->field_image ); $j++) {
+                    $image = [
+                        'contentID' => $article->field_image[$j]['fid'],
+                        'caption' => $article->field_image[$j]['caption'],
+                        'post_id' => $post_id
+                    ];
+                    write_log( 'Queuing $image = [ contentID => ' . $image['contentID'] . ', post_id => ' . $image['post_id'] . ' ]' );
+                    $BackgroundImageProcess->push_to_queue( $image );
+                }
+                $BackgroundImageProcess->save()->dispatch();
+                $BackgroundImageProcess->empty_queue();
             }
 
-            //modifies the post after images have been parsed and uploaded
-            $post_id = WPActions::createPost($article);
             unset($_SESSION['importList'][$articleCid]);
         }
+
+        write_log( '-----------------------------------' . "\n\n" );
     }
 
     $selectedPub = '';
@@ -96,17 +107,13 @@ function content_submenu_page_callback()
     if (isset($_POST['logoutButton'])) {
         Redirects::contentXpressSessionEnd();
     }
-    echo '<div class="contentxpress_page_content">';
+    echo '<div class="contentxpress_page_content wrap">';
         echo '<div class="float-left">';
-            echo '<h2>ContentXpress</h2>';
-            echo '<h4>Welcome: ' . CXPRequest::contentXpressSessionGet("cxpuser") . '</h4>';
+            echo '<h1>ContentXpress</h1>';
         echo '</div>';
 
         initImportList();
         echo '<form id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
-            echo '<div class="float-right cxpLogoutButton">';
-                echo '<input type="submit" class="button" name="logoutButton" value="Logout of ContentXpress""/>';
-            echo '</div>';
 
             echo '<div class="clear"></div>';
 

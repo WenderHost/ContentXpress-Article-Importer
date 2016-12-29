@@ -124,11 +124,10 @@ class WPActions
 
         if ( ! is_null( $post_id ) ) {
             WPActions::updatePost( $post_id, $cxp_post );
-            //Logger::log(get_class() . __METHOD__, 'Updated Post: ' . $post_id, false);
+            write_log( __METHOD__ . '() Updating post `' . $post_title . '` (ID: ' . $post_id . ').' );
         } else {
             $post_id = wp_insert_post( $cxp_post );
-            //Logger::log(get_class() . __METHOD__, 'Created Post: ' . $post_id, false);
-            Logger::log(get_class() . __METHOD__, '<p><strong>$article:</strong></p><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $article, true ) . '</textarea>', true );
+            write_log( __METHOD__ . '() Creating post `' . $article->title . '` (ID: ' . $post_id . ').' );
         }
 
         // Add the sub-heading as a custom field
@@ -268,6 +267,8 @@ class WPActions
         );
 
         $attach_id = wp_insert_attachment( $attachment, trailingslashit( $path ) . $unique_filename, $post_id );
+        if( ! function_exists( 'wp_generate_attachment_metadata' ) )
+            include_once( ABSPATH . 'wp-admin/includes/image.php' );
         $attach_data = wp_generate_attachment_metadata( $attach_id, trailingslashit( $path ) . $unique_filename );
         wp_update_attachment_metadata( $attach_id, $attach_data );
 
@@ -277,9 +278,6 @@ class WPActions
         if (is_null($attach_id)) {
             throw new Exception('Could not find location of image.');
         }
-
-        //Logger::log(get_class().__METHOD__, 'file: '.$upload_dir['url'], true);
-        //print_r($media);
 
         $imgArray['request-size'] = wp_get_attachment_image($attach_id, 'medium');
         $imgArray['full-size'] = wp_get_attachment_image($attach_id, 'full');
