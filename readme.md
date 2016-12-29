@@ -18,6 +18,7 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 - Utilizing `WP_Async_Task` for article imports
 - Adding `admin_notices` to alert the user when a batch of articles has completed importing
 - Adding a "Check All" option to set imported posts to "Publish"
+- Updating new author email to match site domain
 - BUGFIX: Fixing original developers' code so that the "Articles per page" drop down will work
 
 #### 2.1.4
