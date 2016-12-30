@@ -184,14 +184,17 @@ function content_submenu_page_callback()
     echo '<input type="submit" id="searchButton" class="button" name="keywordSearch" value="Search"/>';
     echo '<hr />';
     echo '<div class="float-left">';
+
     //*** Create Articles per Page dropdown ***//
     echo '<div style="margin-bottom: 5px;">';
-    $pageLengthOptions = array("10", "25", "50");
+
+    $pageLengthOptions = [10, 25, 50];
+
     echo '<strong>Articles per Page: </strong>';
     echo '<select name="newPageLengthSelect" onchange="this.form.submit()">';
-    foreach ($pageLengthOptions as $pageLengthOption) {
+    foreach ( $pageLengthOptions as $pageLengthOption ) {
         $selected = "";
-        if ($newPageLength == $pageLengthOption) {
+        if ( $newPageLength == $pageLengthOption ) {
             $selected = 'selected="selected"';
         }
         echo $pageLengthOptions[] = '<option value="' . $pageLengthOption . '"' . $selected . '>' . $pageLengthOption . '</option>';
@@ -264,9 +267,10 @@ function content_submenu_page_callback()
     $searchTotal = $searchResponse->xpath('//s:response/@total');
     $searchStart = $searchResponse->xpath('//s:response/@start');
     $searchPageLength = $searchResponse->xpath('//s:response/@page-length');
-    $newEnd = $searchTotal[0] < 10 ? $searchTotal[0] : $newStart + 9;
+
     $contentList = array();
     $articleCid = '';
+
     echo '<input type="hidden" name="newStart" value="' . $searchStart[0] . '"/>';
     echo '<div class="container float-left">';
     echo '<div class="header"><span class="headerText">Import List</span>
@@ -317,6 +321,7 @@ function content_submenu_page_callback()
     echo '<input name="importSelectAllCheckbox" type="checkbox" value="" class="selectall" style="margin-left: 10px;"/><span>Select All for Import </span>';
     echo '</div>';
     echo '<div class="next-previousWrapper float-left">';
+
     //*** Next and Previous Buttons ***//
     if ($newStart == 1) {
         echo '<input type="submit" class="cxpButton inactive_cpxButton float-left" name="previous" value="Previous" disabled="disabled" />';
@@ -324,6 +329,8 @@ function content_submenu_page_callback()
         echo '<input type="submit" class="cxpButton float-left" name="previous" value="Previous" />';
     }
 
+    // Displaying X - X+ of Y articles
+    $newEnd = ( $searchTotal[0] < $newPageLength ) ? $searchTotal[0] : $newStart + ( $newPageLength - 1 );
     echo '<p class="float-left" style="padding: 0 10px;">Displaying ' . $searchStart[0] . ' - ' . $newEnd . ' of ' . $searchTotal[0] . ' articles</p>';
 
     if ($newStart + $searchPageLength[0] >= $searchTotal[0]) {
