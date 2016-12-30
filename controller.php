@@ -84,24 +84,7 @@ function logged_in_user_check()
     }
 
 }
-
-
 add_action('admin_init', 'logged_in_user_check');
 
-function contentXpress_output_buffer()
-{
-    ob_start();
-}
-
-add_action('init', 'contentXpress_output_buffer');
-
 add_action('wp_ajax_contentXpressImporter_contentStoreList', 'updateImportList');
-
 add_action('wp_ajax_contentXpressImporter_defaultPostType', 'setDefaultPostType');
-
-ini_set('session.save_path', '/tmp');
-
-class loginController
-{
-
-}
