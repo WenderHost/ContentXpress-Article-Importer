@@ -27,6 +27,7 @@ require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp_actions.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/contentStoreList.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/contentView.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/custom_taxonomy.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/form_handler.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/logger.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/loginController.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/settings.php' );

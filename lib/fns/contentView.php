@@ -1,65 +1,25 @@
 <?php
 function content_submenu_page_callback()
 {
-    global $BackgroundImageProcess;
-
-    if (isset($_POST ['importButton'])) {
-        //upload article and images to Wordpress
-        write_log( '-----------------------------------' );
-        write_log( 'IMPORTING ' . count( $_SESSION['importList'] ) . ' ARTICLE(S)' );
-        write_log( '-----------------------------------' );
-
-        foreach ($_SESSION['importList'] as $articleCid => $value) {
-            write_log("\n\n");
-            $article = CXPRequest::importArticle( $value );
-
-            // If article has images, add a gallery to the top of the post
-            if ( isset( $article->field_image ) )
-                $article->body = "[gallery link=\"file\" type=\"slideshow\" autostart=\"false\"]\n" . $article->body;
-
-            //create the initial post
-            $post_id = WPActions::createPost( $article );
-
-            // Add any article images to our Background Image Processing queue
-            if ( isset( $article->field_image ) ) {
-                write_log( 'Adding ' . count( $article->field_image ) . ' image(s) to Background Image Processing queue...' );
-                for ( $j = 0; $j < sizeof( $article->field_image ); $j++) {
-                    $image = [
-                        'contentID' => $article->field_image[$j]['fid'],
-                        'caption' => $article->field_image[$j]['caption'],
-                        'post_id' => $post_id
-                    ];
-                    write_log( 'Queuing $image = [ contentID => ' . $image['contentID'] . ', post_id => ' . $image['post_id'] . ' ]' );
-                    $BackgroundImageProcess->push_to_queue( $image );
-                }
-                $BackgroundImageProcess->save()->dispatch();
-                $BackgroundImageProcess->empty_queue();
-            }
-
-            unset($_SESSION['importList'][$articleCid]);
-        }
-
-        write_log( '-----------------------------------' . "\n\n" );
-    }
 
     $selectedPub = '';
-    if (isset($_POST['publicationsSelect'])) {
-        $selectedPub = $_POST['publicationsSelect'];
+    if (isset($_REQUEST['publicationsSelect'])) {
+        $selectedPub = $_REQUEST['publicationsSelect'];
     }
 
     $selectedIssue = '';
-    if (isset($_POST['issuesSelect'])) {
-        $selectedIssue = $_POST['issuesSelect'];
+    if (isset($_REQUEST['issuesSelect'])) {
+        $selectedIssue = $_REQUEST['issuesSelect'];
     }
 
     $selectedSection = '';
-    if (isset($_POST['sectionsSelect'])) {
-        $selectedSection = $_POST['sectionsSelect'];
+    if (isset($_REQUEST['sectionsSelect'])) {
+        $selectedSection = $_REQUEST['sectionsSelect'];
     }
 
     $keywords = '';
-    if (isset($_POST['keywordsInput'])) {
-        $keywords = $_POST['keywordsInput'];
+    if (isset($_REQUEST['keywordsInput'])) {
+        $keywords = $_REQUEST['keywordsInput'];
     }
 
     //*** Set $newStart and $newPageLength ***//
@@ -69,44 +29,44 @@ function content_submenu_page_callback()
     $newPlatform = "";
     $newPublished = "";
 
-    if (isset($_POST['newStart'])) {
-        $newStart = $_POST['newStart'];
+    if (isset($_REQUEST['newStart'])) {
+        $newStart = $_REQUEST['newStart'];
     }
 
-    if (isset($_POST['newPageLengthSelect'])) {
-        $newPageLength = $_POST['newPageLengthSelect'];
+    if (isset($_REQUEST['newPageLengthSelect'])) {
+        $newPageLength = $_REQUEST['newPageLengthSelect'];
     }
 
-    if (isset($_POST['previous'])) {
+    if (isset($_REQUEST['previous'])) {
         $newStart = $newStart - $newPageLength;
     }
 
-    if (isset($_POST['next'])) {
+    if (isset($_REQUEST['next'])) {
         $newStart = $newStart + $newPageLength;
     }
 
-    if (isset($_POST['sortBySelect'])) {
-        $newSort = $_POST['sortBySelect'];
+    if (isset($_REQUEST['sortBySelect'])) {
+        $newSort = $_REQUEST['sortBySelect'];
     }
 
-    if (isset($_POST['platformSelect'])) {
-        $newPlatform = $_POST['platformSelect'];
+    if (isset($_REQUEST['platformSelect'])) {
+        $newPlatform = $_REQUEST['platformSelect'];
     }
 
-    if (isset($_POST['publishedSelect'])) {
-        $newPublished = $_POST['publishedSelect'];
+    if (isset($_REQUEST['publishedSelect'])) {
+        $newPublished = $_REQUEST['publishedSelect'];
     }
 
-    if (isset($_POST['logoutButton'])) {
+    if (isset($_REQUEST['logoutButton'])) {
         Redirects::contentXpressSessionEnd();
     }
     echo '<div class="contentxpress_page_content wrap">';
-        echo '<div class="float-left">';
-            echo '<h1>ContentXpress</h1>';
-        echo '</div>';
+        echo '<h1>ContentXpress</h1>';
 
         initImportList();
-        echo '<form id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
+        //echo '<form id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
+        echo '<form action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
+        echo '<input type="hidden" name="action" value="cxp_form">';
 
             echo '<div class="clear"></div>';
 
