@@ -154,7 +154,7 @@ class CxpGitHubPluginUpdater {
         $response->download_link = $downloadLink;
 
         // Load Parsedown
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'Parsedown.php';
+        require_once CXP_PLUGIN_DIR_PATH . 'lib/classes/Parsedown.php';
 
         // Create tabs in the lightbox
         $response->sections = array(
