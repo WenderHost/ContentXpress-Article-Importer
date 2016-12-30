@@ -1,11 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/redirects.php');
-require_once(dirname(__FILE__) . '/controller.php');
-require_once(dirname(__FILE__) . '/cxpRequest.php');
-require_once(dirname(__FILE__) . '/httpUtils.php');
-require_once(dirname(__FILE__) . '/preview.php');
-require_once(dirname(__FILE__) . '/contentStoreList.php');
-
 function content_submenu_page_callback()
 {
     global $BackgroundImageProcess;
