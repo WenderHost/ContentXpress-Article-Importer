@@ -75,8 +75,6 @@ function logged_in_user_check()
     global $pagenow;
     $page = isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : false ;
     if ( $pagenow == 'admin.php' && ( $page == 'contentxpress' ) ) {
-        //$cxpuser = CXPRequest::contentXpressSessionGet("cxpuser");
-
         $success = cxp_login();
         if ( false == $success ) {
             add_settings_error( 'invalidLogin', 'invalid', 'Your login credentials did not work. Please update them.', 'error' );
@@ -84,15 +82,7 @@ function logged_in_user_check()
             exit;
         }
     }
-    /*
-    elseif ($pagenow == 'admin.php' && ($page == 'settings')) {
-        $cxpuser = CXPRequest::contentXpressSessionGet("cxpuser");
-        if (!empty($cxpuser)) {
-            wp_redirect('admin.php?page=contentxpress');
-            exit;
-        }
-    }
-    /**/
+
 }
 
 
