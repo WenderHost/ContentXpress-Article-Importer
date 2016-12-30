@@ -15,9 +15,12 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 - Add `nonces` to form handler
 - Display status during form submit
-- Allow updating via WordPress update API
 
 ### Changelog
+
+#### 2.2.1
+
+- Allow updates via the WordPress Update interface
 
 #### 2.2.0
 
