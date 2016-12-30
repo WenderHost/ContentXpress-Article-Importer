@@ -40,7 +40,6 @@ gulp.task('package', function(callback){
   runSequence(
     'clean-package',
     'copy-plugin',
-    'update-package-meta',
     'zip-package',
     callback
   );
