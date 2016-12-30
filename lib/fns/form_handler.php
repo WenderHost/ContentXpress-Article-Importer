@@ -4,12 +4,18 @@ function cxp_import_content(){
     global $BackgroundImageProcess;
 
     $count_articles = 0;
+    $count_images = 0;
     if ( isset( $_POST ['importButton'] ) ) {
+
         //upload article and images to Wordpress
         $count_articles = count( $_SESSION['importList'] );
         write_log( '-----------------------------------' );
         write_log( 'IMPORTING ' . $count_articles . ' ARTICLE(S)' );
         write_log( '-----------------------------------' );
+
+        echo '<pre style="background: #eee; padding: 10px; max-width: 1200px; margin: 10px auto;">[ContentXpress] IMPORTING ' . $count_articles . ' ARTICLE(S):' . "\n\n";
+        ob_flush();
+        flush();
 
         foreach ($_SESSION['importList'] as $articleCid => $value) {
             write_log("\n\n");
@@ -21,27 +27,48 @@ function cxp_import_content(){
 
             //create the initial post
             $post_id = WPActions::createPost( $article );
+            echo 'ADDING POST `' . $article->title . '` (ID: ' . $post_id . ').' . "\n";
+            ob_flush();
+            flush();
 
             // Add any article images to our Background Image Processing queue
             if ( isset( $article->field_image ) ) {
-                write_log( 'Adding ' . count( $article->field_image ) . ' image(s) to Background Image Processing queue...' );
+                $message = 'Adding ' . count( $article->field_image ) . ' image(s) to Background Image Processing queue...';
+                write_log( $message );
+                echo $message . "\n";
+                ob_flush();
+                flush();
+
                 for ( $j = 0; $j < sizeof( $article->field_image ); $j++) {
                     $image = [
                         'contentID' => $article->field_image[$j]['fid'],
                         'caption' => $article->field_image[$j]['caption'],
                         'post_id' => $post_id
                     ];
-                    write_log( 'Queuing $image = [ contentID => ' . $image['contentID'] . ', post_id => ' . $image['post_id'] . ' ]' );
+                    $image_message = 'Queuing $image = [ contentID => ' . $image['contentID'] . ', post_id => ' . $image['post_id'] . ' ]';
+                    write_log( $image_message );
+                    echo $image_message . "\n";
+                    ob_flush();
+                    flush();
+
                     $BackgroundImageProcess->push_to_queue( $image );
+                    $count_images++;
                 }
                 $BackgroundImageProcess->save()->dispatch();
                 $BackgroundImageProcess->empty_queue();
+                echo "\n";
+                ob_flush();
+                flush();
             }
 
             unset($_SESSION['importList'][$articleCid]);
         }
 
         write_log( '-----------------------------------' . "\n\n" );
+        echo '[ContentXpress] ' . $count_images . ' IMAGES were queued for background processing.' . "\n";
+        echo '------------- FINISHED! REDIRECTING... -------------</pre>' . "\n\n";
+        ob_flush();
+        flush();
     }
 
     $allowed_query_vars = [
@@ -72,7 +99,17 @@ function cxp_import_content(){
         $page.= '&' . implode( '&', $query_args );
     }
 
-    wp_redirect( admin_url( $page ) );
+    // Do a JS redirect if we've already sent
+    // output to the browser
+    if( isset( $_POST ['importButton'] ) ){
+    ?>
+<script type="text/javascript">
+window.location.href = '<?= $page ?>';
+</script>
+    <?php
+    } else {
+        wp_redirect( admin_url( $page ) );
+    }
     exit;
 }
 add_action( 'admin_post_cxp_form', 'cxp_import_content' );
