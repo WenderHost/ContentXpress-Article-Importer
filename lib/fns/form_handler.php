@@ -1,6 +1,13 @@
 <?php
 
 function cxp_import_content(){
+    if(
+        ! isset( $_POST['_cxp_form_post_nonce'] )
+        || ! wp_verify_nonce( $_POST['_cxp_form_post_nonce'], 'cxp_form_post' )
+    ){
+        wp_die( '[nonce error] You do not have permission to perform this operation.' );
+    }
+
     global $BackgroundImageProcess;
 
     $count_articles = 0;

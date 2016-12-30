@@ -67,6 +67,7 @@ function content_submenu_page_callback()
         //echo '<form id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
         echo '<form action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" id="pubsForm" name="pubsForm" method="post" autocomplete="off">';
         echo '<input type="hidden" name="action" value="cxp_form">';
+        wp_nonce_field( 'cxp_form_post', '_cxp_form_post_nonce' );
 
             echo '<div class="clear"></div>';
 
