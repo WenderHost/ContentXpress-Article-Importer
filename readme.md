@@ -11,6 +11,12 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 - Imports `<prism:section>` as a category
 - Adds article images to the top of the content as a `[gallery]`
 
+### Todos
+
+- Add `nonces` to form handler
+- Display status during form submit
+- Allow updating via WordPress update API
+
 ### Changelog
 
 #### 2.2.0
@@ -28,7 +34,7 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 #### 2.1.3
 
-- Initialing `$sub_heading` variable in `WPActions::createPost()`
+- Initializing `$sub_heading` variable in `WPActions::createPost()`
 - Updates to package build process
 
 #### 2.1.2

@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: ContentXpress Article Importer
- * Description: This Plugin imports articles from the ContentXpress. {latest_commit}
+ * Description: This Plugin imports articles from ContentXpress. {latest_commit}
  * Version: {version}
- * Author: Publishers Printing Company
+ * Author: Publishers Printing Company, Michael Wender
  * Author URI: http://www.pubpress.com/services/pubpress-solutions/contentxpress
  * Network: true
  * License: GPL2
@@ -15,6 +15,14 @@ require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp-async-request.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp-background-process.php' );
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/background-image-process.php' );
 $BackgroundImageProcess = new CXP_Background_Image_Process();
+
+// Initialize Plugin Updates
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/plugin-updater.php' );
+if( is_admin() ){
+    add_action( 'init', function(){
+        new CxpGitHubPluginUpdater( __FILE__, 'WenderHost', 'ContentXpress-Article-Importer' );
+    } );
+}
 
 // Classes
 require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/ArticleToImport.php' );
