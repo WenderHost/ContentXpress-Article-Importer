@@ -1,11 +1,4 @@
 <?php
-/*
- $cxp_options = Array
-(
-    [username] => mentelle
-    [password] => mentell2Read
-)
- */
 namespace CXP\lib\fns\settings;
 
 add_action( 'admin_init', __NAMESPACE__ . '\\settings_init' );
@@ -101,7 +94,6 @@ function password_field_cb( $args ){
 <?php
 }
 
-//*
 function validate_username( $username = null ){
     if( null == $username ){
         add_settings_error( 'usernameEmpty', 'empty', 'Username can not be emtpy.', 'error' );
@@ -114,4 +106,3 @@ function validate_username( $username = null ){
 
     return $username;
 }
-/**/

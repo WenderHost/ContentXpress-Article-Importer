@@ -8,43 +8,43 @@
  * Network: true
  * License: GPL2
  */
+define( 'CXP_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 
 // Initialize Background Image Processing
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/wp-async-request.php' );
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/wp-background-process.php' );
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/classes/background-image-process.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp-async-request.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp-background-process.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/background-image-process.php' );
 $BackgroundImageProcess = new CXP_Background_Image_Process();
 
-require_once (dirname(__FILE__) . '/preview.php');
-require_once (dirname(__FILE__) . '/ArticleToImport.php');
-require_once (dirname(__FILE__) . '/contentStoreList.php');
-require_once (dirname(__FILE__) . '/contentView.php');
-require_once (dirname(__FILE__) . '/cxpRequest.php');
-require_once (dirname(__FILE__) . '/httpUtils.php');
-require_once (dirname(__FILE__) . '/logger.php');
-require_once (dirname(__FILE__) . '/loginController.php');
-require_once (dirname(__FILE__) . '/redirects.php');
-require_once (dirname(__FILE__) . '/wp_actions.php');
+// Classes
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/ArticleToImport.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/cxpRequest.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/httpUtils.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/redirects.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/wp_actions.php' );
 
-// Load misc functions
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/custom_taxonomy.php' );
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/settings.php' );
-require_once ( plugin_dir_path( __FILE__ ) . 'lib/fns/wp_query.php' );
+// Functions
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/contentStoreList.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/contentView.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/custom_taxonomy.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/logger.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/loginController.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/settings.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/fns/wp_query.php' );
 
+// Views
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/views/preview.php' );
 
-if ( true == WP_DEBUG ) {
-    Logger::enable( true );
-} else {
-    Logger::disable();
-}
-
+/**
+ * Initializes the plugin
+ */
 function CXPImport_init()
 {
-    wp_enqueue_style('CXPStyleSheet', plugins_url('style.css', __FILE__));
-    wp_register_script('contentView', plugins_url('contentView.js', __FILE__), array('jquery'), filemtime( plugin_dir_path( __FILE__ ) . 'contentView.js' ), true );
+    wp_enqueue_style( 'CXPStyleSheet', plugins_url( 'style.css', __FILE__ ) );
+    wp_register_script( 'contentView', plugins_url( 'lib/js/contentView.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'lib/js/contentView.js' ), true );
     wp_localize_script( 'contentView', 'contentViewAjax', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
-    wp_enqueue_script('jQuery');
-    wp_enqueue_script('contentView');
+    wp_enqueue_script( 'jQuery' );
+    wp_enqueue_script( 'contentView' );
 }
 
 add_action('admin_init', 'CXPImport_init');

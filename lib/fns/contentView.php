@@ -255,7 +255,7 @@ function content_submenu_page_callback()
     $searchResponse = new SimpleXMLElement(CXPRequest::getArticleResults($selectedPub, $selectedIssue, $selectedSection, $keywords, $newStart, $newPageLength, $newSort, $newPlatform, $newPublished));
 
     $xsl = new DOMDocument;
-    $xsl->load(plugin_dir_url(__FILE__) . "highlight.xsl");
+    $xsl->load( CXP_PLUGIN_DIR_PATH . 'lib/xsl/highlight.xsl' );
     $xslt = new XSLTProcessor;
     $xslt->importStyleSheet($xsl);
     $searchResponse = new SimpleXMLElement($xslt->transformToXml($searchResponse));

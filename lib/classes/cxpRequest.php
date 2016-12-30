@@ -42,7 +42,6 @@ class CXPRequest
         } else {
             curl_close($ch);
         }
-       // Logger::log(get_class() . __METHOD__,$data, false);
         CXPRequest::$http_code = $response['http_code'];
         return $data;
     }
@@ -236,7 +235,6 @@ class CXPRequest
         CXPRequest::get_media_info($articleXml, $node);
         CXPRequest::get_rtf_terms($articleXml, $node);
 
-        //Logger::log( get_class() . __METHOD__, '<strong>$articleXml:</strong><br><textarea style="width: 80%; height: 200px; font-family: Courier; background-color: #eee;">' . print_r( $articleXml->asXML(), true ) . '</textarea>', true );
         write_log( __METHOD__ . '() retrieving `' . $title . '`.' );
 
         return $node;

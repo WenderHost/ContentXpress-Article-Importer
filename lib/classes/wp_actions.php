@@ -42,7 +42,7 @@ class WPActions
                         $errors[] = 'Error(' . $code . '): ' . $user_id->get_error_message( $code );
                     }
                 }
-                Logger::log( get_class() . __METHOD__, 'Error creating user <code>' . $authorUsername . '</code><ul><li>' . implode( '</li><li>', $errors ) . '<li></ul>', true );
+                write_log( __METHOD__ . '() Error creating user <code>' . $authorUsername . '</code><ul><li>' . implode( '</li><li>', $errors ) . '<li></ul>' );
 
                 // if no user exists, default to current WP user
                 $user_id = get_current_user_id();

@@ -1,7 +1,8 @@
 <?php
-require_once (dirname(__FILE__) . '/ArticleToImport.php');
-require_once (dirname(__FILE__) . '/cxpRequest.php');
-require_once (dirname(__FILE__) . '/httpUtils.php');
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/ArticleToImport.php' );
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/cxpRequest.php');
+require_once ( CXP_PLUGIN_DIR_PATH . 'lib/classes/httpUtils.php');
+
 session_start();
 if(isset($_GET['uri'])){
     $uri = $_GET['uri'];
