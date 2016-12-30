@@ -38,16 +38,17 @@ require_once ( CXP_PLUGIN_DIR_PATH . 'lib/views/preview.php' );
 /**
  * Initializes the plugin
  */
-function CXPImport_init()
+function CXPImport_init( $hook )
 {
+    if( 'toplevel_page_contentxpress' != $hook )
+        return;
+
     wp_enqueue_style( 'CXPStyleSheet', plugins_url( 'style.css', __FILE__ ) );
-    wp_register_script( 'contentView', plugins_url( 'lib/js/contentView.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'lib/js/contentView.js' ), true );
+    wp_enqueue_script( 'contentView', plugins_url( 'lib/js/contentView.js', __FILE__ ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'lib/js/contentView.js' ), true );
     wp_localize_script( 'contentView', 'contentViewAjax', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
-    wp_enqueue_script( 'jQuery' );
-    wp_enqueue_script( 'contentView' );
 }
 
-add_action('admin_init', 'CXPImport_init');
+add_action('admin_enqueue_scripts', 'CXPImport_init');
 add_action( 'admin_menu', 'contentXpress' );
 
 function contentXpress()
