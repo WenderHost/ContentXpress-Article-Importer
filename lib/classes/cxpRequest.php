@@ -448,7 +448,7 @@ class CXPRequest
         $file = file_get_contents($url, false, $header);
 
         if ($file === false) {
-            $file = file_get_contents(plugin_dir_path(__FILE__) . 'images/missing-image.png');
+            $file = file_get_contents(plugin_dir_path(__FILE__) . 'lib/images/missing-image.png');
         } else {
             $filename = CXPRequest::parseHeaders($http_response_header)['Content-Disposition'];
             $filename = str_replace('filename=', '', $filename);

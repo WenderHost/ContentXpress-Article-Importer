@@ -30,7 +30,6 @@ gulp.task('copy-plugin', function(){
     '!./package.json',
     './*.md',
     './lib/**/*',
-    './images/**/*',
     './.idea/**/*'], {base:"."})
     .pipe(gulp.dest(packageDir));
 });

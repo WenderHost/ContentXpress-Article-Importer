@@ -57,7 +57,7 @@ function contentXpress()
     $menu_slug = 'contentxpress'; // $menu_slug = 'contentXpress';
 
     // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-    add_menu_page( 'ContentXpress', 'ContentXpress', 'edit_posts', $menu_slug, 'content_submenu_page_callback', plugin_dir_url(__FILE__) . 'images/coLogo20px.png', '24.1' );
+    add_menu_page( 'ContentXpress', 'ContentXpress', 'edit_posts', $menu_slug, 'content_submenu_page_callback', plugin_dir_url(__FILE__) . 'lib/images/coLogo20px.png', '24.1' );
     add_submenu_page( $menu_slug, 'Import Content', 'Import', 'edit_posts', $menu_slug, 'content_submenu_page_callback');
 
     // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );

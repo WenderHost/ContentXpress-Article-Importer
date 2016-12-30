@@ -152,7 +152,7 @@
     display: none;
     cursor: pointer;
     float:right;
-    background: url(images/modal_close.png) no-repeat;
+    background: url(lib/images/modal_close.png) no-repeat;
 }
 
 /*Disable the links in the article while previewing article*/
@@ -213,7 +213,7 @@
 }
 
 .trashImportButton {
-    background: url("images/trash.png") transparent no-repeat scroll 0 0;
+    background: url("lib/images/trash.png") transparent no-repeat scroll 0 0;
     border: none;
     cursor: pointer;
     height: 16px;
