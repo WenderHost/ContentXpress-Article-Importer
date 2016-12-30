@@ -13,6 +13,7 @@ function cxp_import_content(){
     $count_articles = 0;
     $count_images = 0;
     if ( isset( $_POST ['importButton'] ) ) {
+        ob_start();
 
         //upload article and images to Wordpress
         $count_articles = count( $_SESSION['importList'] );
@@ -72,7 +73,7 @@ function cxp_import_content(){
         }
 
         write_log( '-----------------------------------' . "\n\n" );
-        echo '[ContentXpress] ' . $count_images . ' IMAGES were queued for background processing.' . "\n";
+        echo "\n" . '[ContentXpress] ' . $count_images . ' IMAGES were queued for background processing.' . "\n";
         echo '------------- FINISHED! REDIRECTING... -------------</pre>' . "\n\n";
         ob_flush();
         flush();
