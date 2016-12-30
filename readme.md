@@ -11,12 +11,12 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 - Imports `<prism:section>` as a category
 - Adds article images to the top of the content as a `[gallery]`
 
-### Todos
-
-- Add `nonces` to form handler
-- Display status during form submit
-
 ### Changelog
+
+#### 2.2.2
+
+- Echoing import status during form handling
+- Add `nonce` checking to form handling
 
 #### 2.2.1
 
