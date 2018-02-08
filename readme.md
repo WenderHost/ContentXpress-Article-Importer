@@ -13,6 +13,10 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.2.3
+
+- Bugfix: Updating article import to assign new posts to existing authors
+
 #### 2.2.2
 
 - Echoing import status during form handling
