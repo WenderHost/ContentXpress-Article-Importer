@@ -34,17 +34,24 @@ class WPActions
             $user_id = wp_create_user( $authorUsername, wp_generate_password(), $authorEmail );
 
             if( is_wp_error( $user_id ) ){
-                // Show the errors
-                $error_codes = $user_id->get_error_codes();
-                if( is_array( $error_codes ) && 0 < count( $error_codes ) ){
-                    $errors = array();
-                    foreach( $error_codes as $code ){
-                        $errors[] = 'Error(' . $code . '): ' . $user_id->get_error_message( $code );
-                    }
-                }
-                write_log( __METHOD__ . '() Error creating user <code>' . $authorUsername . '</code><ul><li>' . implode( '</li><li>', $errors ) . '<li></ul>' );
+              // Show the errors
+              $error_codes = $user_id->get_error_codes();
+              if( is_array( $error_codes ) && 0 < count( $error_codes ) ){
+                  if( in_array( 'existing_user_login', $error_codes ) ){
+                    $user_by_login = get_user_by( 'login', $authorUsername );
+                  }
+                  $errors = array();
+                  foreach( $error_codes as $code ){
+                      $errors[] = 'Error(' . $code . '): ' . $user_id->get_error_message( $code );
+                  }
+              }
+              write_log( __METHOD__ . '() Error creating user <code>' . $authorUsername . '</code><ul><li>' . implode( '</li><li>', $errors ) . '<li></ul>' );
 
-                // if no user exists, default to current WP user
+              if( $user_by_login )
+                $user_id = $user_by_login->ID;
+
+              // if no user exists, default to current WP user
+              if( ! $user_id || is_wp_error( $user_id ) )
                 $user_id = get_current_user_id();
             } else {
                 // if we've created a user, update this user's meta
