@@ -34,4 +34,4 @@ if(isset($_GET['uri'])){
         echo $articleBody[0]->asXML();
     }
 }
-?>
+session_write_close();

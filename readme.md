@@ -13,6 +13,10 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.2.4
+
+- Bugfix: Closing session in `lib/views/previews.php`.
+
 #### 2.2.3
 
 - Bugfix: Updating article import to assign new posts to existing authors
