@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ContentXpress Article Importer
  * Description: This Plugin imports articles from ContentXpress.
- * Version: 2.2.4
+ * Version: 2.3.0
  * Author: Publishers Printing Company, Michael Wender
  * Author URI: http://www.pubpress.com/services/pubpress-solutions/contentxpress
  * Network: true

@@ -34,4 +34,24 @@ if(isset($_GET['uri'])){
         echo $articleBody[0]->asXML();
     }
 }
-session_write_close();
+/**
+ * !DO NOT CLOSE THIS SESSION!
+ *
+ * 10/19/2021 (07:18) - You are probably here because the WordPress site health screen is
+ * complaining of a unclosed session. DO NOT CLOSE the session by uncommenting
+ * `session_write_close()` below. If you do, the plugin will no longer function.
+ *
+ * You may be tempted to close the above `session_start()` by uncommenting
+ * `session_write_close()` below. Don't do it unless you fix ContentXpress's implementation of
+ * their code. Closing the session below results in the plugin not being able to import.
+ *
+ * You are able to select the articles for import on the intial screen. Then on the subsequent
+ * screen you get the following message:
+ *
+ * [ContentXpress] IMPORTING 0 ARTICLE(S):
+ *
+ * [ContentXpress] 0 IMAGES were queued for background processing.
+ * ------------- FINISHED! REDIRECTING... --------------
+ *
+ */
+//session_write_close();

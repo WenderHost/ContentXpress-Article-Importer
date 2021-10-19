@@ -13,6 +13,10 @@ This is a [WordPress](https://wordpress.org) plugin for importing articles from 
 
 ### Changelog
 
+#### 2.3.0
+
+- Documenting the need to keep the PHP session open inside `lib/fns/preview.php`. Otherwise, if you close it, the plugin is not able to import from the ContentXpress API. At some point in the future, I'd advise we fix the plugin to not require leaving the session open, but at this point, I'm simply documenting the requirement so as not to break the plugin in the future by using `session_write_close()` in `lib/fns/preview.php`.
+
 #### 2.2.4
 
 - Bugfix: Closing session in `lib/views/previews.php`.
